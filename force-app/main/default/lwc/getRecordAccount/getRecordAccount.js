@@ -2,7 +2,7 @@ import { LightningElement, api,wire } from 'lwc';
 import { getRecord,getFieldValue } from 'lightning/uiRecordApi';
 import ACCOUNT_NAME from '@salesforce/schema/Account.Name';
 import ACCOUNT_PHONE from '@salesforce/schema/Account.Phone';
-// 項目定義
+// 項目定義　スキーマからインポートしたもの、直書きしたもの
 const FIELDS = [ACCOUNT_NAME, ACCOUNT_PHONE,'Account.AnnualRevenue'];
 export default class getRecordAccount extends LightningElement {
     // 詳細画面ID取得
