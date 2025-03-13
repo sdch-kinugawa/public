@@ -1,8 +1,8 @@
 <template>
     <lightning-card>
         <div class="slds-m-around_medium">
-            <!-- 1.0 -->
-            <template if:true={account.data}>
+            <!-- 必ず値の有無判定して参照しないと、「acc.data.」でエラーになります。 -->
+            <template if:true={acc.data}>
                 <div>
                     <p>Name:{name}</p>
                 </div>
@@ -11,6 +11,11 @@
                 </div>
                 <div>
                     <p>Annual Revenue:{acc.data.fields.AnnualRevenue.value}</p>
+                </div>
+                <div>
+                    <p>
+                        Annual Revenue:<lightning-formatted-number value={acc.data.fields.AnnualRevenue.value}></lightning-formatted-number>
+                    </p>
                 </div>
             </template>
         </div>
