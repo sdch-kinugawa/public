@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title="updateRecordAccount">
+        <div class="slds-m-around_medium">
+            <!-- 必ず値の有無判定して参照しないと、「acc.data.」でエラーになります。 -->
+            <template if:true={acc.data}>
+                <lightning-button label="更新" variant="Neutral" slot="actions" onclick={handleUpdate}></lightning-button>
+                <div>
+                    <!-- 取引先名 -->
+                    <lightning-input type="text" label="取引先名" data-field="Name" value={name}></lightning-input>
+                </div>
+                <div>
+                    <!-- 電話番号 -->
+                    <lightning-input type="tel" label="電話番号" data-field="Phone" value={phone}></lightning-input>
+                </div>
+                <div>
+                    <!-- 年間売上 -->
+                    <lightning-input type="number" label="年間売上" data-field="AnnualRevenue" value={acc.data.fields.AnnualRevenue.value}></lightning-input>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
