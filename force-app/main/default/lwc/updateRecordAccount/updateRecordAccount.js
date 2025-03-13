@@ -72,5 +72,4 @@ export default class updateRecordAccount extends LightningElement {
         });
         this.dispatchEvent(event);
     }
-
 }
