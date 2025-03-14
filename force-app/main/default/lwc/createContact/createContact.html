@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="createContact">
+        <lightning-button label="作成" variant="Neutral" slot="actions" onclick={handleCreate}></lightning-button>
+        <div class="slds-m-around_medium">
+            <!-- 姓 -->
+            <lightning-input type="text" label="姓" data-field="LastName" value={LastName}></lightning-input>
+            <!-- 名 -->
+            <lightning-input type="text" label="名" data-field="FirstName" value={FirstName}></lightning-input>
+            <!-- メール -->
+            <lightning-input type="email" label="メール" data-field="Email" value={Email}></lightning-input>
+            <!-- 取引先 -->
+            <lightning-record-picker
+                label="取引先"
+                placeholder="取引先名または電話番号を入力..."
+                object-api-name="Account"
+                filter={filterAcc}
+                matching-info={matchingInfoAcc}
+                display-info={displayInfoAcc}
+                data-field="AccountId">
+            </lightning-record-picker>
+        </div>
+    </lightning-card>
+</template>
