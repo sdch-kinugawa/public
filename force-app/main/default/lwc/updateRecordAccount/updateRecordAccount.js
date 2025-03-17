@@ -41,7 +41,7 @@ export default class updateRecordAccount extends LightningElement {
             // 画面の入力値を取引先項目へ設定
             const fields = {};
             fields[ACCOUNT_ID.fieldApiName] = this.recordId;
-            fields[ACCOUNT_NAME.fieldApiName] = this.template.querySelector("[data-field='Name']",).value;
+            fields[ACCOUNT_NAME.fieldApiName] = this.template.querySelector("[data-field='Name']").value;
             fields[ACCOUNT_PHONE.fieldApiName] = this.template.querySelector("[data-field='Phone']").value;
             fields['AnnualRevenue'] = this.template.querySelector("[data-field='AnnualRevenue']").value;
         
@@ -51,12 +51,10 @@ export default class updateRecordAccount extends LightningElement {
                 .then(() => {
                     // 正常終了
                     this.showToast("成功", '更新完了しました。', 'success');
-                    // 再取得して描画します。
-                    return refreshApex(this.acc);
                 })
                 .catch((error) => {
                     // システムエラーの場合はこちら
-                    this.showToast("失敗", error.body.message, 'error');
+                    this.showToast("失敗", error, 'error');
                 });
         } else {
             // システムエラーの場合はこちら
