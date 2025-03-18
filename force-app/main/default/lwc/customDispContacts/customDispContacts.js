@@ -130,7 +130,6 @@ export default class CustomDispContacts extends LightningElement {
         }
     }
 
-
     // ================================
     // ルックアップ条件設定
     // ================================
