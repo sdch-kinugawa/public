@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title="DispContacts">
+        <div class="slds-m-around_medium">
+            <!-- data : 代入されたコレクションを表示 -->
+            <!-- columns : 表示したい列を定義 -->
+            <!-- draft-values : インライン編集で変更した値のリストを保持しています。-->
+            <!-- show-row-number-column : 行番号表示 -->
+            <!-- onsave : 保存ボタン押下後のアクション実施 -->
+            <lightning-datatable
+                key-field="Id"
+                data={contacts.data}
+                columns={columns}
+                draft-values={draftValues} 
+                show-row-number-column
+                onsave={handleSave}>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>
