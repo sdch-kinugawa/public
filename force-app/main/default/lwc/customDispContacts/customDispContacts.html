@@ -1,0 +1,101 @@
+<template>
+    <lightning-card title="customDispContacts">
+        <div class="slds-m-top_medium cs-scrollable-container">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col" style="min-width: 50px; width: 50px;"><div class="slds-truncate" title="No">No.</div></th>
+                        <th scope="col" style="min-width: 130px; width: 150px;"><div class="slds-truncate" title="LastName">LastName</div></th>
+                        <th scope="col" style="min-width: 130px; width: 150px;"><div class="slds-truncate" title="FirstName">FirstName</div></th>
+                        <th scope="col" style="min-width: 200px; width: 200px;"><div class="slds-truncate" title="Email">Email</div></th>
+                        <th scope="col" style="min-width: 200px; width: 200px;"><div class="slds-truncate" title="AccountId">AccountId</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={conList} for:item="row" for:index="index">
+                        <tr key={row.Id} class="slds-hint-parent" data-index={row.SortNo__c}>
+                            <!--No.-->                                 
+                            <td data-label="SortNo__c">
+                                <div class="slds-truncate" title={row.SortNo__c}>
+                                    <lightning-input type="number"
+                                                    variant="label-hidden" 
+                                                    name="SortNo" 
+                                                    data-index={row.SortNo__c} 
+                                                    onblur={handleFieldChange}
+                                                    value={row.SortNo__c}
+                                                    data-value={row.SortNo__c}
+                                                    read-only>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--姓-->
+                            <td data-label="LastName">
+                                <div class="slds-truncate" title={row.LastName}>
+                                    <lightning-input type="text"
+                                                    variant="label-hidden" 
+                                                    name="LastName" 
+                                                    data-index={row.SortNo__c} 
+                                                    onchange={handleFieldChange} 
+                                                    value={row.LastName}
+                                                    required>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--名-->
+                            <td data-label="FirstName">
+                                <div class="slds-truncate" title={row.FirstName}>
+                                    <lightning-input type="text"
+                                                    variant="label-hidden" 
+                                                    name="FirstName" 
+                                                    data-index={row.SortNo__c} 
+                                                    onchange={handleFieldChange} 
+                                                    value={row.FirstName}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--メール-->
+                            <td data-label="Email">
+                                <div class="slds-truncate" title={row.Email}>
+                                    <lightning-input type="email"
+                                                    variant="label-hidden" 
+                                                    name="Email" 
+                                                    data-index={row.SortNo__c} 
+                                                    onchange={handleFieldChange} 
+                                                    value={row.Email}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--取引先-->
+                            <td data-label="AccountId">
+                                <div title={row.AccountId}>
+                                    <lightning-record-picker
+                                        label="Account"
+                                        variant="label-hidden"
+                                        placeholder="取引先を検索"
+                                        object-api-name="Account"
+                                        onchange={handleFieldChange}
+                                        value={row.AccountId}
+                                        matching-info={matchingInfo}
+                                        display-info={displayInfo}
+                                        filter={filter}
+                                        name="AccountId"
+                                        data-value={row.AccountId}
+                                        data-index={row.SortNo__c}>
+                                    </lightning-record-picker>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <footer class="slds-card__footer">
+            <lightning-button 
+                variant="brand" 
+                data-name="Save"
+                label="Save" 
+                onclick={handleSave}>
+            </lightning-button>
+        </footer>
+    </lightning-card>
+</template>
