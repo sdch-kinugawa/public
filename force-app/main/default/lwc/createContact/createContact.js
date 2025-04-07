@@ -96,9 +96,9 @@ export default class CreateContact extends LightningElement {
         primaryField: 'Name',
         additionalFields: ['Phone'],
     };
-    // ================================
-    // 参照項目：検索対象の項目を設定
-    // ================================
+    // ===============================================
+    // 参照項目：検索対象の項目を設定と検索モード設定
+    // ===============================================
     matchingInfoAcc = {
         primaryField: { fieldPath: 'Name', mode: 'startsWith' },
         additionalFields: [{ fieldPath: 'Phone' }],
