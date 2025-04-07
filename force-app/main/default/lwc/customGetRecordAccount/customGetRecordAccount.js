@@ -45,7 +45,6 @@ export default class CustomGetRecordAccount extends LightningElement {
     
         if (allValid) {
             // 画面の入力値を取引先項目へ設定
-            const fields = {};
             this.accInfo.Name = this.template.querySelector("[data-field='Name']").value;
             this.accInfo.Phone = this.template.querySelector("[data-field='Phone']").value;
             this.accInfo.AnnualRevenue = this.template.querySelector("[data-field='AnnualRevenue']").value;
