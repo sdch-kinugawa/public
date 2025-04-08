@@ -6,6 +6,15 @@
             <lightning-input type="text" label="姓" name="LastName" data-field="LastName" value={LastName} data-type="input"></lightning-input>
             <!-- 名 -->
             <lightning-input type="text" label="名" name="FirstName" data-field="FirstName" value={FirstName} data-type="input"></lightning-input>
+            <!-- リードソース templateタグの存在有無判定がないと描画時にエラーとなるため、データを取得してから画面描画するようにする -->
+            <template if:true={leadSourceOptions.data}>
+                <lightning-combobox 
+                    label="リードソース" 
+                    options={leadSourceOptions.data.values} 
+                    data-field="LeadSource" 
+                    value={LeadSource}>
+                </lightning-combobox>
+            </template>
             <!-- メール -->
             <lightning-input type="email" label="メール" name="Email" data-field="Email" value={Email} data-type="input"></lightning-input>
             <!-- 取引先 -->
@@ -14,6 +23,7 @@
                 name="AccountId"
                 placeholder="取引先名または電話番号を入力..."
                 object-api-name="Account"
+                value={AccountId}
                 filter={filterAcc}
                 matching-info={matchingInfoAcc}
                 display-info={displayInfoAcc}

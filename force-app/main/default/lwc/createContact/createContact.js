@@ -1,11 +1,14 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import { createRecord } from 'lightning/uiRecordApi';
+// オブジェクト情報取得用、選択値情報取得用
+import { getObjectInfo, getPicklistValues} from 'lightning/uiObjectInfoApi';
 import CONTACT_OBJECT from "@salesforce/schema/Contact";
 // 各種項目
 import LASTNAME_FIELD from "@salesforce/schema/Contact.LastName";
 import FIRSTNAME_FIELD from "@salesforce/schema/Contact.FirstName";
 import EMAIL_FIELD from "@salesforce/schema/Contact.Email";
 import ACCOUNTID_FIELD from "@salesforce/schema/Contact.AccountId";
+import LEADSOURCE_FIELD from "@salesforce/schema/Contact.LeadSource";
 // メッセージ表示用
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class CreateContact extends LightningElement {
@@ -14,7 +17,17 @@ export default class CreateContact extends LightningElement {
     LastName;
     FirstName;
     Email;
+    LeadSource;
     AccountId;
+
+    // 取引先責任者情報取得
+    @wire(getObjectInfo, { objectApiName: CONTACT_OBJECT })
+    conObjInfo;
+
+    // リードソースの選択値情報取得
+    // getPicklistValuesメソッドの1つ目の引数はレコードタイプIdを設定する必要がある。なければ、「defaultRecordTypeId」を設定すればよい。
+    @wire(getPicklistValues, { recordTypeId: '$conObjInfo.data.defaultRecordTypeId', fieldApiName: LEADSOURCE_FIELD })
+    leadSourceOptions;
 
     async handleCreate() {
 
@@ -45,12 +58,14 @@ export default class CreateContact extends LightningElement {
         // 画面からの入力値を取得する方法１
         fields[LASTNAME_FIELD.fieldApiName] = this.template.querySelector("[data-field='LastName']",).value;
         fields[FIRSTNAME_FIELD.fieldApiName] = this.template.querySelector("[data-field='FirstName']",).value;
+        fields[LEADSOURCE_FIELD.fieldApiName] = this.template.querySelector("[data-field='LeadSource']",).value;
         fields[EMAIL_FIELD.fieldApiName] = this.template.querySelector("[data-field='Email']",).value;
         fields[ACCOUNTID_FIELD.fieldApiName] = this.template.querySelector("[data-field='AccountId']",).value;
+
         
         // 画面からの入力値を取得する方法2
         // lightning-inputタグの値をfieldsに設定
-        // [...this.template.querySelectorAll('lightning-input, lightning-record-picker')].forEach(element => {
+        // [...this.template.querySelectorAll('lightning-input, lightning-record-picker, lightning-combobox')].forEach(element => {
         //     fields[element.name] = element.value;
         // });
         return fields;
@@ -61,8 +76,14 @@ export default class CreateContact extends LightningElement {
 
         this.LastName= '';
         this.FirstName= '';
+        this.LeadSource = '';
         this.Email = '';
         this.AccountId = '';
+
+        // lightning-record-pickerはvalueをクリアしてもクリアされないため、clearSelectionメソッドを呼んでクリアします。
+        this.template.querySelectorAll('lightning-record-picker').forEach((element) => {
+            element.clearSelection() // 検索ボックスの初期化
+        })
 
     }
 
