@@ -31,23 +31,35 @@ export default class CreateContact extends LightningElement {
 
     async handleCreate() {
 
-        // 画面からの入力値を取得
-        const fields = this.getFieldsVal();
-    
-        const recordInput = { apiName: CONTACT_OBJECT.objectApiName, fields };
-        try {
-          // createRecord実施
-          const contact = await createRecord(recordInput)
-          if(contact){
-            // 正常終了
-            this.showToast("成功", '作成完了しました。', 'success');
-            // 画面入力値初期化
-            this.initVal();
-          }
+        // lightning-inputタグの入力規則実施
+        const allValid = [...this.template.querySelectorAll("lightning-input")].reduce(
+            (validSoFar, inputFields) => {
+                inputFields.reportValidity();
+                return validSoFar && inputFields.checkValidity();
+            },true,);
+        
+        if (allValid) {
+            // 画面からの入力値を取得
+            const fields = this.getFieldsVal();
+        
+            const recordInput = { apiName: CONTACT_OBJECT.objectApiName, fields };
+            try {
+            // createRecord実施
+            const contact = await createRecord(recordInput)
+            if(contact){
+                // 正常終了
+                this.showToast("成功", '作成完了しました。', 'success');
+                // 画面入力値初期化
+                this.initVal();
+            }
 
-        } catch (error) {
-            // 電話番号に必須の入力規則を入れてエラーを確認してみましょう。
-            this.showToast("失敗", error.body.output.errors[0].message, 'error');
+            } catch (error) {
+                // 電話番号に必須の入力規則を入れてエラーを確認してみましょう。
+                this.showToast("失敗", error.body.output.errors[0].message, 'error');
+            }
+        } else {
+            // 入力規則エラー
+            this.showToast("失敗", '入力に誤りがあります。', 'error');
         }
     }
 

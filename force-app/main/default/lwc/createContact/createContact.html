@@ -5,7 +5,7 @@
             <!-- 姓 -->
             <lightning-input type="text" label="姓" name="LastName" data-field="LastName" value={LastName} data-type="input"></lightning-input>
             <!-- 名 -->
-            <lightning-input type="text" label="名" name="FirstName" data-field="FirstName" value={FirstName} data-type="input"></lightning-input>
+            <lightning-input type="text" label="名(英字は入力不可)" name="FirstName" data-field="FirstName" value={FirstName} data-type="input" pattern="[^A-Za-z]*"></lightning-input>
             <!-- リードソース templateタグの存在有無判定がないと描画時にエラーとなるため、データを取得してから画面描画するようにする -->
             <template if:true={leadSourceOptions.data}>
                 <lightning-combobox 
