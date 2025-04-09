@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ErrMsg_BillingCreationFailed</fullName>
+        <categories>定数</categories>
+        <language>ja</language>
+        <protected>true</protected>
+        <shortDescription>エラーメッセージ_請求新規更新に失敗</shortDescription>
+        <value>保存を失敗しました。\n各項目のエラーメッセージを確認してください。</value>
+    </labels>
+    <labels>
+        <fullName>ErrMsg_BillingDtRequired</fullName>
+        <categories>定数</categories>
+        <language>ja</language>
+        <protected>true</protected>
+        <shortDescription>エラーメッセージ_請求明細必須</shortDescription>
+        <value>請求明細を1件以上入力してください。</value>
+    </labels>
+    <labels>
+        <fullName>Msg_BillingCreationSuccessful</fullName>
+        <categories>定数</categories>
+        <language>ja</language>
+        <protected>true</protected>
+        <shortDescription>メッセージ_請求作成更新成功</shortDescription>
+        <value>請求が保存されました。</value>
+    </labels>
+</CustomLabels>
