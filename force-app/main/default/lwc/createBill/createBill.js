@@ -269,7 +269,7 @@ export default class CreateBill extends LightningElement {
                     billInfo : this.billInfo,
                     deleteBillDtIds : this.deleteBillDtIds
                 }).then(result => {
-                    if(!result){
+                    if(result){
                         // 正常
                         this.showToast('成功', label_Msg_BillingCreationSuccessful, 'success');
                         // 正常終了後、処理

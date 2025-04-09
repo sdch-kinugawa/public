@@ -19,9 +19,10 @@ export default class LwcButtonList extends NavigationMixin(LightningElement) {
 
     handleBillCreateOnClick(){
         const baseUrl = window.location.origin;
+        // CreateBillは作成したタブのAPI名を指定
         let pageUrl = `${baseUrl}/lightning/n/CreateBill?c__billRecordId=${this.recordId}`;
         console.log('pageUrl == ' + pageUrl);
-        // 見積作成画面に遷移
+        // 請求作成画面に遷移
         window.open(pageUrl, '_self');
     }
 
