@@ -28,7 +28,7 @@ export default class CustomDispContacts extends LightningElement {
     // 取引先責任者設定
     setConList(items) {
         items.forEach((item) => {
-            // 新規請求明細作成
+            // 新規取引先責任者作成
             let row = this.getNewItemRow();
             row.Id = item.Id;
             row.FirstName = item.FirstName;
