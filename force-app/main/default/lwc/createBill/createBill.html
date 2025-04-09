@@ -1,0 +1,292 @@
+<template>
+    <!-- 請求情報　2列表示 -->
+    <lightning-card>
+        <template lwc:if={isLoading}>
+            <div class="slds-align_absolute-center" style="height: 100%; background-color: white;">
+                <lightning-spinner variant="brand" alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        <div class="slds-m-horizontal_medium">
+            <div class="slds-form" role="list">
+                <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                        <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                            <lightning-input 
+                                type="text" 
+                                label="請求名"
+                                value={billInfo.Name}
+                                name="Name"
+                                onchange={handleFieldChange}
+                                read-only>
+                            </lightning-input>
+                            <lightning-record-picker
+                                label="商談"
+                                placeholder="商談を検索"
+                                object-api-name="Opportunity"
+                                name="Opportunity__c"
+                                value={billInfo.Opportunity__c}
+                                onchange={handleFieldChange}
+                                required>
+                            </lightning-record-picker> 
+                            <lightning-record-picker
+                                label="請求先"
+                                placeholder="請求先を検索"
+                                object-api-name="Account"
+                                name="BillingPartner__c"
+                                value={billInfo.BillingPartner__c}
+                                onchange={handleFieldChange}
+                                required>
+                            </lightning-record-picker> 
+                            <lightning-input
+                                label="承認日"
+                                type="Date"
+                                name="ApprovalDate__c" 
+                                value={billInfo.ApprovalDate__c}
+                                onchange={handleFieldChange}
+                                read-only>
+                            </lightning-input>
+                            <lightning-input
+                                label="承認済"
+                                type="checkbox"
+                                name="IsAwaitingConfirmation__c" 
+                                value={billInfo.IsAwaitingConfirmation__c}
+                                onchange={handleFieldChange}
+                                read-only>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                        <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                            <lightning-combobox
+                                label="進捗"
+                                class="slds-form-element"
+                                placeholder="進捗を選択"                                      
+                                options={statusOptions}
+                                name="Status__c"
+                                value={billInfo.Status__c}
+                                onchange={handleFieldChange}
+                                required>
+                            </lightning-combobox>
+                            <lightning-input
+                                label="請求日"
+                                type="Date"
+                                name="BillingDate__c" 
+                                value={billInfo.BillingDate__c}
+                                onchange={handleFieldChange}
+                                required>
+                            </lightning-input>
+                            <lightning-input 
+                                label="請求額"
+                                type="number"
+                                name="AmountBilled__c" 
+                                value={billInfo.AmountBilled__c}
+                                read-only>
+                            </lightning-input>
+                            <lightning-textarea 
+                                label="備考"
+                                type="text" 
+                                name="Remarks__c" 
+                                value={billInfo.Remarks__c}
+                                onchange={handleFieldChange}
+                                rows="2">
+                            </lightning-textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 請求明細情報 -->
+        <div class="slds-m-top_large cs-scrollable-container">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col" style="min-width: 40px;"><div class="slds-truncate" title="Selected"></div></th>
+                        <th scope="col" style="min-width: 50px;"><div class="slds-truncate slds-text-align_center" title="コピー">コピー</div></th>
+                        <th scope="col" style="min-width: 50px;"><div class="slds-truncate slds-text-align_center" title="削除">削除</div></th>
+                        <th scope="col" style="min-width: 80px; width: 80px;"><div class="slds-truncate" title="No">No.</div></th>
+                        <th scope="col" style="min-width: 335px; width: 335px;"><div class="slds-truncate" title="商品名">商品名</div></th>
+                        <th scope="col" style="min-width: 125px; width: 125px;"><div class="slds-truncate" title="単価">単価</div></th>
+                        <th scope="col" style="min-width: 80px; width: 80px;"><div class="slds-truncate" title="数量">数量</div></th>
+                        <th scope="col" style="min-width: 125px; width: 125px;"><div class="slds-truncate" title="小計">小計</div></th>
+                        <th scope="col" style="min-width: 80px; width: 80px;"><div class="slds-truncate" title="割引">割引</div></th>
+                        <th scope="col" style="min-width: 125px; width: 125px;"><div class="slds-truncate" title="請求金額">請求金額</div></th>
+                        <th scope="col" style="min-width: 400px;"><div class="slds-truncate" title="備考">備考</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={billInfo.BillingDetails} for:item="row" for:index="index">
+                        <tr key={row.Id} class="slds-hint-parent" data-index={row.SortNo__c}>
+                            <!--選択行-->
+                            <td data-label="Selected">
+                                <div class="slds-truncate" title={row.Selected}>
+                                    <input type="radio" 
+                                        onchange={handleSeletedRow} 
+                                        data-index={row.SortNo__c}
+                                        accesskey={row.SortNo__c} 
+                                        value={row.Selected} 
+                                        name="Selected"
+                                        checked={row.Selected} />
+                                </div>
+                            </td>
+                            <!--コピー-->
+                            <td data-label="copyButton">
+                                <div class="slds-truncate slds-text-align_center" title="copyButton">
+                                    <lightning-button-icon-stateful
+                                        icon-name="utility:copy"
+                                        variant="border-filled"
+                                        alternative-text="コピー"
+                                        onclick={handleClickCopy}
+                                        data-index={row.SortNo__c}
+                                        name="copyButton"
+                                        size="large">
+                                    </lightning-button-icon-stateful>
+                                </div>
+                            </td>
+                            <!--削除-->
+                            <td data-label="deleteRow">
+                                <div class="slds-truncate slds-text-align_center" title="deleteRow">
+                                    <lightning-button-icon-stateful
+                                        icon-name="utility:delete"
+                                        variant="border-filled"
+                                        alternative-text="削除"
+                                        onclick={handleClickDelRow}
+                                        data-index={row.SortNo__c}
+                                        data-name="dtlDelRowBtn"
+                                        name="DeleteRowButton"
+                                        size="large">
+                                    </lightning-button-icon-stateful>
+                                </div>
+                            </td>
+                            <!--No.-->                                 
+                            <td data-label="SortNo__c">
+                                <div class="slds-truncate" title={row.SortNo__c}>
+                                    <lightning-input type="number"
+                                                    variant="label-hidden" 
+                                                    name="SortNo" 
+                                                    data-index={row.SortNo__c} 
+                                                    onblur={handleFieldChangeWithCal}
+                                                    value={row.SortNo__c}
+                                                    data-value={row.SortNo__c}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--商品コード-->
+                            <td data-label="ProductId__c">
+                                <div title={row.ProductId__c}>
+                                    <lightning-record-picker
+                                        label="商品コード"
+                                        variant="label-hidden"
+                                        placeholder="商品コードを検索"
+                                        object-api-name="Product2"
+                                        onchange={handleFieldChangeWithCal}
+                                        value={row.ProductId__c}
+                                        matching-info={matchingInfo}
+                                        display-info={displayInfo}
+                                        filter={filter}
+                                        name="ProductId__c"
+                                        data-value={row.ProductId__c}
+                                        data-index={row.SortNo__c}>
+                                    </lightning-record-picker>
+                                </div>
+                            </td>
+                            <!--単価-->
+                            <td data-label="UnitPrice__c">
+                                <div class="slds-truncate" title={row.UnitPrice__c}>
+                                    <lightning-input type="number"
+                                                    variant="label-hidden" 
+                                                    name="UnitPrice__c" 
+                                                    data-index={row.SortNo__c} 
+                                                    onchange={handleFieldChangeWithCal} 
+                                                    value={row.UnitPrice__c}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--数量-->
+                            <td data-label="Quantity__c">
+                                <div class="slds-truncate" title={row.Quantity__c}>
+                                    <lightning-input type="number"
+                                                    variant="label-hidden"
+                                                    name="Quantity__c" 
+                                                    data-index={row.SortNo__c}
+                                                    data-value={row.Quantity__c}
+                                                    onchange={handleFieldChangeWithCal} 
+                                                    value={row.Quantity__c}
+                                                    step="0">
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--小計-->
+                            <td data-label="Subtotal__c">
+                                <div class="slds-truncate" title={row.Subtotal__c}>
+                                    <lightning-input type="number" 
+                                                    variant="label-hidden"
+                                                    name="Subtotal" 
+                                                    data-value={row.Subtotal__c}
+                                                    data-index={row.SortNo__c}
+                                                    onchange={handleFieldChangeWithCal} 
+                                                    value={row.Subtotal__c}
+                                                    read-only>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--割引-->
+                            <td data-label="Discount__c">
+                                <div class="slds-truncate" title={row.Discount__c}>
+                                    <lightning-input type="number" 
+                                                    variant="label-hidden"
+                                                    name="Discount__c" 
+                                                    data-value={row.Discount__c}
+                                                    data-index={row.SortNo__c}
+                                                    onchange={handleFieldChangeWithCal} 
+                                                    value={row.Discount__c}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--請求額-->
+                            <td data-label="AmountBilled__c">
+                                <div class="slds-truncate" title={row.AmountBilled__c}>
+                                    <lightning-input type="number" 
+                                                    variant="label-hidden"
+                                                    name="AmountBilled__c" 
+                                                    data-value={row.AmountBilled__c}
+                                                    data-index={row.SortNo__c}
+                                                    value={row.AmountBilled__c}
+                                                    read-only>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <!--備考-->
+                            <td data-label="Remarks__c">
+                                <div class="slds-truncate" title={row.Remarks__c}>
+                                    <lightning-textarea type="text" 
+                                                    variant="label-hidden" 
+                                                    rows="2"
+                                                    name="Remarks__c" 
+                                                    data-index={row.SortNo__c} 
+                                                    onchange={handleFieldChangeWithCal} 
+                                                    value={row.Remarks__c}>
+                                    </lightning-textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <footer class="slds-card__footer">
+            <lightning-button 
+                variant="brand" 
+                data-name="Save"
+                label="Save" 
+                onclick={handleSave}>
+            </lightning-button>
+            <lightning-button 
+                variant="brand"
+                class="slds-m-left_small"
+                data-name="meisaiAdd1RowAfter" 
+                label="1行追加_下" 
+                onclick={handleClickAdd1RowAfter}>
+            </lightning-button>
+        </footer>
+    </lightning-card>
+</template>

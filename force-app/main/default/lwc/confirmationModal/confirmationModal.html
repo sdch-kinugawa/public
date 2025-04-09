@@ -1,0 +1,8 @@
+<template>
+    <lightning-modal-header label="以下の請求を保存します。よろしいですか？"></lightning-modal-header>
+    <lightning-modal-body> 請求名: {targetRow.Name}  </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="戻る" onclick={handleCancel}></lightning-button>
+        <lightning-button class="slds-m-left_small" label="保存" onclick={handleOkay}></lightning-button>
+    </lightning-modal-footer>
+</template>

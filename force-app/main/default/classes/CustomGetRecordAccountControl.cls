@@ -44,10 +44,10 @@ public without sharing class CustomGetRecordAccountControl {
         try{
             // 画面からの取引先情報設定　画面の値は格納先のデータ型に変換して設定
             Account acc = new Account(
-                  Id = CommonUtill.toStrValNull(accInfo.get('Id'))
-                , Name = CommonUtill.toStrValNull(accInfo.get('Name'))
-                , Phone = CommonUtill.toStrValNull(accInfo.get('Phone'))
-                , AnnualRevenue = CommonUtill.toDecValNull(accInfo.get('AnnualRevenue'))
+                  Id = CommonUtil.toStrValNull(accInfo.get('Id'))
+                , Name = CommonUtil.toStrValNull(accInfo.get('Name'))
+                , Phone = CommonUtil.toStrValNull(accInfo.get('Phone'))
+                , AnnualRevenue = CommonUtil.toDecValNull(accInfo.get('AnnualRevenue'))
             );
 
             // 取引先情報更新

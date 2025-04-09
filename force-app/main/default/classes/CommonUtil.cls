@@ -1,7 +1,7 @@
 /**
  * 共通処理
  */
-public without sharing class CommonUtill {
+public without sharing class CommonUtil {
 
     /**
      * 選択リスト値取得
