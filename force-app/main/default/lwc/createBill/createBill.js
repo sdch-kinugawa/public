@@ -80,6 +80,9 @@ export default class CreateBill extends LightningElement {
     // 請求と請求明細情報取得
     setBillInfo = async (billId) => {
 
+        // Loadingオフ
+        this.isLoading = true;
+
         // 請求情報の取得
         getBillInfo({ id: billId })
             .then(res => {
@@ -269,14 +272,23 @@ export default class CreateBill extends LightningElement {
                     billInfo : this.billInfo,
                     deleteBillDtIds : this.deleteBillDtIds
                 }).then(result => {
-                    if(result){
-                        // 正常
+                    // エラーがなければ
+                    if(!result.errMsg){
+                        // 新規また更新の時には、Idを再設定する
+                        this.billInfo.Id = result.billId;
+                        
+                        // 正常メッセージ表示
                         this.showToast('成功', label_Msg_BillingCreationSuccessful, 'success');
+
                         // 正常終了後、処理
                         this.afterCompletedProc();
+
+                        // 再取得して再描画
+                        this.setBillInfo(this.billInfo.Id);
+                        
                     } else {
                         // 入力チェックエラー
-                        this.showToast('失敗', result, 'error');
+                        this.showToast('失敗', result.errMsg, 'error');
                     }
         
                 }).catch(error => {
@@ -301,11 +313,12 @@ export default class CreateBill extends LightningElement {
         return result;
     }
 
-
     // 正常終了後、処理
     afterCompletedProc(){
-        // 初期化
-        this.deleteBillDtIds = []; 
+        // 削除レコードクリア
+        this.deleteBillDtIds = [];
+        // 明細行削除
+        this.billInfo.BillingDetails = [];
     }
 
     // 選択済設定

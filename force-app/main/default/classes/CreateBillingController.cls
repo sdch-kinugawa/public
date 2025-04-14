@@ -1,7 +1,7 @@
 public without sharing class CreateBillingController {
 
-    private static Decimal amountLimit = 10000000;
-    private static String amountLimitErrMag = '金額が上限をオーバーしています。再調整指定下さい。';
+    private static Decimal AMOUNT_LIMIT = 10000000;
+    private static String AMOUNT_LIMIT_ERR_MSG = '金額が上限をオーバーしています。再調整指定下さい。';
 
     /**
      * 指定項目リストを返す
@@ -174,8 +174,9 @@ public without sharing class CreateBillingController {
         }
 
         // 金額上限エラー
-        if(totalAmount >= amountLimit){
-            errMsg = amountLimitErrMag;
+        if(totalAmount >= AMOUNT_LIMIT){
+            // メッセージ設定
+            errMsg = AMOUNT_LIMIT_ERR_MSG;
         }
 
         return errMsg;
