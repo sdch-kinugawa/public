@@ -1,7 +1,6 @@
 import { LightningElement, track, wire } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation'; // 別Windowからの遷移なので、直前の請求IDを取得する用
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { reduceErrors } from 'c/ldsUtils';
 // Apexコントロラー呼出
 import getSelectOptions from '@salesforce/apex/CreateBillingController.getSelectOptions';
 import saveBill from '@salesforce/apex/CreateBillingController.saveBill';
@@ -293,9 +292,8 @@ export default class CreateBill extends LightningElement {
                     }
         
                 }).catch(error => {
-                    let systemErrMsg = reduceErrors(error);
                     // エラー
-                    this.showToast('失敗', systemErrMsg, 'error');
+                    this.showToast('失敗', error, 'error');
                 });
             }
         });
