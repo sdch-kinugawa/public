@@ -50,8 +50,13 @@ public without sharing class CustomGetRecordAccountControl {
                 , AnnualRevenue = CommonUtil.toDecValNull(accInfo.get('AnnualRevenue'))
             );
 
+            // 20億以上の年間売上の場合はエラー
+            if(acc.AnnualRevenue > 2000000000){
+                errMsg = '20億以上の売上会社は更新できません。再度確認してください。';
+            }
+
             // 取引先情報更新
-            upsert acc;
+            if(errMsg == '') upsert acc;
 
         } catch (Exception e) {
             errMsg += e.getMessage() + ' : ' + e.getStackTraceString();
