@@ -4,11 +4,11 @@
             <lightning-button label="更新" variant="Neutral" onclick={handleUpdate}></lightning-button>
             <div>
                 <!-- 取引先名 -->
-                <lightning-input type="text" label="取引先名" data-field="Name" value={accInfo.Name}></lightning-input>
+                <lightning-input type="text" label="取引先名" data-field="Name" value={accInfo.Name} required></lightning-input>
             </div>
             <div>
                 <!-- 電話番号 -->
-                <lightning-input type="tel" label="電話番号" data-field="Phone" value={accInfo.Phone}></lightning-input>
+                <lightning-input type="tel" label="電話番号" data-field="Phone" value={accInfo.Phone} required></lightning-input>
             </div>
             <div>
                 <!-- 年間売上 -->

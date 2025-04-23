@@ -35,7 +35,7 @@ export default class CustomGetRecordAccount extends LightningElement {
     }
 
     // 更新
-    handleUpdate(event){
+    handleUpdate(){
         // lightning-inputタグの入力規則実施
         const allValid = [...this.template.querySelectorAll("lightning-input")].reduce(
         (validSoFar, inputFields) => {
@@ -63,6 +63,9 @@ export default class CustomGetRecordAccount extends LightningElement {
                 // システムエラーの場合はこちら
                 this.showToast("失敗", error.body.message, 'error');
             });
+        } else {
+            // 入力規則エラー
+            this.showToast('失敗', '入力に誤りがあります。再度入力内容確認してください。', 'error');
         }
     }
 
