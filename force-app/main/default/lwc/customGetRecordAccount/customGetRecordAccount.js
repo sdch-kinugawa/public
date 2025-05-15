@@ -37,6 +37,7 @@ export default class CustomGetRecordAccount extends LightningElement {
     // 更新
     handleUpdate(){
         // lightning-inputタグの入力規則実施
+        // スプレッド構文「...」を使ってarrayにして、reduce関数実行
         const allValid = [...this.template.querySelectorAll("lightning-input")].reduce(
         (validSoFar, inputFields) => {
             inputFields.reportValidity();
